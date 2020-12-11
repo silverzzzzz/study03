@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>eelテスト</title>
+        <link rel="stylesheet" href="./style.css">
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h2>eelテスト</h2>
+        <!--#1-->
+        <div>
+            <label>出力先CSVファイル名<input type="text" name="csvname" id="csvname"></label>
+            <label>検索ワード<input type="text" name="search" id="sword"></label>
+            <button id="search">検索</button>
+        </div>
+        <!--#1ここまで-->
+        <!--#3-->
+        <textarea id="searchlog"></textarea>
+        <!--#3ここまで-->
+        <script type="text/javascript" src="./eel.js"></script>
+        <script>
+            var search = document.getElementById('search');
+            search.addEventListener('click', () => {
+                //inputの値を変数に代入
+                var sword = document.getElementById('sword').value;
+                if( sword==""){
+                    //Inputがからの場合は入力を求める
+                    alert("検索ワードを入力してください。");
+                }else{
+                    let csvname = document.getElementById('csvname').value == "" ? "source" : document.getElementById('csvname').value;
+                    //console.log(csvname);
+                    //Pythonの関数の呼び出しを定義
+                    async function pysearch(sword,csvname) {
+                        let val = await eel.kimetsu_search(sword,csvname)();
+                        //alert(val);
+                        document.getElementById('searchlog').value += val + "\n";
+                    }
+                    //pythonの関数を呼ぶ
+                    pysearch(sword,csvname);
+                    //eel.kimetsu_search(sword);
+                }
+                eel.expose(view_log_js);
+                function view_log_js(text) {
+                }
+            });
+        </script>
+    </body>
+</html>
